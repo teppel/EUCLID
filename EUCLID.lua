@@ -129,7 +129,7 @@ end
 ----  FUNCTIONS FOR diary.csv ----
 function readDiaryFromFile (fn)
 	local fh,err = io.open(fn)
-	if err then print("readDiaryFromFile() could not open file"); return; end
+	if err then print("readDiaryFromFile() COULD NOT OPEN FILE:" ..fn); return; end
 	-- ersten 3 zeilen verwerfen
 	line = fh:read()
 	line = fh:read()
@@ -193,6 +193,20 @@ function markerTypeFromDiaryString (s)
 	if r[10] == "X" then return "Nuechtern" end
 	if r[11] == "X" then return "Schlaf" end
 	return nil
+end
+
+function lastDiaryDay ()
+	local e = diary[1]
+	local t = {day=e.day, month=e.month, year=e.year}
+	return t
+end
+
+function firstDiaryDay ()
+	local e = diary[#diary]	
+		--print ("e.day:",e.day)
+	local t = {day=e.day, month=e.month, year=e.year}
+		--print ("t.day:",t.day)
+	return t
 end
 
 --- FUNCTIONS FOR FSL
@@ -570,13 +584,16 @@ end
 ----
 function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 	print ("htmlReport () start")
-	
+	print ("diaryFN:", diaryFN)
+	startDay_table.hour = 0
+	endDay_table.hour = 24
 	local startDay_time = os.time (startDay_table)
 	local endDay_time = os.time (endDay_table)
 	
 	runGnuplot ("timegraph.gnuplot", {
 			["PlotZeitStart"] = timeToDDMMYYYY(startDay_time) .. ";00:00",
 			["PlotZeitEnde"]  = timeToDDMMYYYY(endDay_time) .. ";00:00",
+			["MesswertDatei"]  = diaryFN,
 			["Titel"] = "gesamt von " .. readableTime(startDay_time) .. " bis " .. readableTime(endDay_time),
 			["plotDateiName"] = OUTPUT_PATH.."//gesamt_" .. timeToDDMMYYYY(startDay_time) .."-to-"..timeToDDMMYYYY(endDay_time).. ".png"
 			} )
@@ -633,6 +650,7 @@ function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 		runGnuplot ("timegraph.gnuplot", {
 			["PlotZeitStart"] = timeToDDMMYYYY(plot_time) .. ";00:00",
 			["PlotZeitEnde"]  = timeToDDMMYYYY(os.time(nextMonth (startDay_table2))) .. ";00:00",
+			["MesswertDatei"]  = diaryFN,
 			["Titel"] = "Monatsverlauf " ..  os.date ("%m.%Y (%B)", plot_time),  --.. readableTime(plot_time),
 			["plotDateiName"] = OUTPUT_PATH.."//month//monthplot_" .. timeToDDMMYYYY(plot_time) .. ".png"
 			} )
@@ -964,10 +982,10 @@ end
 readDiaryFromFile (DIARY_FILE)
 mergeDiaryAndZusatzIntoTB_v2()
 diaryIntoMonthlyFiles (OUTPUT_PATH.."//monthcsv//")
-htmlReport ( {day=1,month=6,year=2016,hour=0} , {day=5,month=11,year=2017,hour=24} , "anfang_bis_5-11-2017.html", "diary.csv")
+htmlReport ( firstDiaryDay()  , lastDiaryDay() , "report.html", DIARY_FILE)
 
 --readDiaryFromFile ("diary.csv")
-dailyTestFrequency (OUTPUT_PATH.."//testfrequency.csv", "testfrequencybis5-11-2017.png")
+dailyTestFrequency (OUTPUT_PATH.."//testfrequency.csv", OUTPUT_PATH.."//testfrequency.png")
 --]]
 
 --diaryIntoFileWithWeekday ("temp//diarywithweekdays.csv")
