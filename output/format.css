@@ -1,0 +1,43 @@
+p { font-size: 1.0em; 
+	font-family: "Courier New", Courier, monospace;
+	line-height: 0.35em; background: white;
+	display:none;
+}
+
+.UZ {color:red;  font-weight:bold}
+
+.HI {color:purple;  font-weight:bold}
+
+.note {color:gray;}
+
+h1 { font-size: 1.0em; 
+	font-family: "Courier New", Courier, monospace;
+	page-break-before:avoid;
+	display:none;
+}
+
+hr { 
+    width: 95%; 
+    height: 5px; 
+    margin: 0 auto;
+    color: orange;
+    background: orange;
+	 page-break-after:always;
+}
+
+
+table, th,td {
+	border: 1px solid black;
+	border-collapse: collapse;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 0.75em;
+	page-break-before:avoid;
+	text-align: center;
+	display:none;
+/*	float:left; */  /* tabellen nebeneinander statt untereinander - zerballert leider layout total*/
+}
+caption       { text-align: center; }
+
+/* .pagebreak { page-break-before: always; } */
+
+.pagebreak { page-break-before: auto; }
