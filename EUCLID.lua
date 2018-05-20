@@ -1,3 +1,8 @@
+--config--
+OUTPUT_PATH = "output"
+DIARY_FILE = "input//diary.csv"
+----------
+
 require ("csvparser")
 --                                                                                                              10       11              12                
 --Datum;Uhrzeit;Messwert;Einheit;Temperaturwarnung;Außerhalb Zielbereich;Sonstiges;Vor Mahlzeit;Nach Mahlzeit;Nüchtern;Schlafenszeit;Funktionskontrolle
@@ -573,13 +578,13 @@ function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 			["PlotZeitStart"] = timeToDDMMYYYY(startDay_time) .. ";00:00",
 			["PlotZeitEnde"]  = timeToDDMMYYYY(endDay_time) .. ";00:00",
 			["Titel"] = "gesamt von " .. readableTime(startDay_time) .. " bis " .. readableTime(endDay_time),
-			["plotDateiName"] = "temp//gesamt_" .. timeToDDMMYYYY(startDay_time) .."-to-"..timeToDDMMYYYY(endDay_time).. ".png"
+			["plotDateiName"] = OUTPUT_PATH.."//gesamt_" .. timeToDDMMYYYY(startDay_time) .."-to-"..timeToDDMMYYYY(endDay_time).. ".png"
 			} )
 	
 	runGnuplot ("scatter24h.gnuplot", {
 		["Titel"] = "24h Verteilung fuer " ..  diaryFN,
 		["MesswertDatei"]  = diaryFN,
-		["plotDateiName"] =  "temp//gesamtscatter.png"
+		["plotDateiName"] =  OUTPUT_PATH.."//gesamtscatter.png"
 		} )
 	
 	--print ("startDay_time:",startDay_time,  timeToDDMMYYYY(startDay_time) )
@@ -597,7 +602,7 @@ function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 			["PlotZeitStart"] = timeToDDMMYYYY(plot_time) .. ";00:00",
 			["PlotZeitEnde"]  = timeToDDMMYYYY(plot_time) .. ";23:59",
 			["Titel"] = "Tag " .. readableTime(plot_time),
-			["plotDateiName"] = "temp//day//dayplot_" .. timeToDDMMYYYY(plot_time) .. ".png",
+			["plotDateiName"] = OUTPUT_PATH.."//day//dayplot_" .. timeToDDMMYYYY(plot_time) .. ".png",
 		--	["fslDatei"] = "days//FSL_" .. timeToDDMMYYYY(plot_time) .. ".csv"
 			} )
 		
@@ -613,7 +618,7 @@ function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 			["PlotZeitStart"] = timeToDDMMYYYY(plot_time) .. ";00:00",
 			["PlotZeitEnde"]  = timeToDDMMYYYY(plot_time + (60*60*24*7)) .. ";00:00",
 			["Titel"] = "Wochenverlauf " .. readableTime(plot_time),
-			["plotDateiName"] = "temp//week//weekplot_" .. timeToDDMMYYYY(plot_time) .. ".png"
+			["plotDateiName"] = OUTPUT_PATH.."week//weekplot_" .. timeToDDMMYYYY(plot_time) .. ".png"
 			} )
 		--plot_time = plot_time + (60*60*24*7)
 		plot_time = os.time( addDays (os.date("*t", plot_time) , 7)	)
@@ -629,20 +634,20 @@ function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 			["PlotZeitStart"] = timeToDDMMYYYY(plot_time) .. ";00:00",
 			["PlotZeitEnde"]  = timeToDDMMYYYY(os.time(nextMonth (startDay_table2))) .. ";00:00",
 			["Titel"] = "Monatsverlauf " ..  os.date ("%m.%Y (%B)", plot_time),  --.. readableTime(plot_time),
-			["plotDateiName"] = "temp//month//monthplot_" .. timeToDDMMYYYY(plot_time) .. ".png"
+			["plotDateiName"] = OUTPUT_PATH.."//month//monthplot_" .. timeToDDMMYYYY(plot_time) .. ".png"
 			} )
 		
 		runGnuplot ("scatter24h.gnuplot", {
 		["Titel"] = "24h Verteilung fuer" .. os.date ("%m.%Y (%B)", plot_time) ,
-		["MesswertDatei"]  = "temp//monthcsv//month_"..timeToDDMMYYYY(plot_time),
-		["plotDateiName"] =  "temp//month//monthscatter_" .. timeToDDMMYYYY(plot_time) .. ".png"
+		["MesswertDatei"]  = OUTPUT_PATH.."//monthcsv//month_"..timeToDDMMYYYY(plot_time),
+		["plotDateiName"] =  OUTPUT_PATH.."//month//monthscatter_" .. timeToDDMMYYYY(plot_time) .. ".png"
 		} )
 		
 		startDay_table2 = nextMonth (startDay_table2)
 		plot_time = os.time (startDay_table2)
 	end
 	
-	html = io.open("temp//"..outFN, "w")
+	html = io.open(OUTPUT_PATH.."//"..outFN, "w")
 	html:write ([[<!doctype html>
 <html>
   <head>
@@ -821,7 +826,7 @@ function DO_BZpairs ()
 		local endDate = nextMonth(startDate)
 		endDate = addDays (endDate,-1)
 		endDate.hour = 24
-		local fn = "temp//seq//bla//" .. dateTableAsFileName (startDate) .. "-to-" .. dateTableAsFileName (endDate)
+		local fn = OUTPUT_PATH.."//seq//bla//" .. dateTableAsFileName (startDate) .. "-to-" .. dateTableAsFileName (endDate)
 		sequencedBZpairsToFile (startDate , endDate, fn)
 
 		runGnuplot ("seqBZpairs.gnuplot", {
@@ -923,7 +928,7 @@ htmlReport ( {day=26,month=2,year=2017,hour=0} , {day=12,month=3,year=2017,hour=
 
 --[[
 readDiaryFromFile ("delmediary2017.csv")
-fn = "temp//busch2017//2017lows.csv"
+fn = OUTPUT_PATH.."//busch2017//2017lows.csv"
 	printLows (fn)
 	runGnuplot ("plotLows.gnuplot", {
 		["Titel"] = "lows 2017, BZ <" .. LO,
@@ -968,13 +973,13 @@ end
 
 ----[[
 --htmlreport - geht
-readDiaryFromFile ("diary.csv")
+readDiaryFromFile (DIARY_FILE)
 mergeDiaryAndZusatzIntoTB_v2()
-diaryIntoMonthlyFiles ("temp//monthcsv//")
+diaryIntoMonthlyFiles (OUTPUT_PATH.."//monthcsv//")
 htmlReport ( {day=1,month=6,year=2016,hour=0} , {day=5,month=11,year=2017,hour=24} , "anfang_bis_5-11-2017.html", "diary.csv")
 
 --readDiaryFromFile ("diary.csv")
-dailyTestFrequency ("temp//testfrequency.csv", "testfrequencybis5-11-2017.png")
+dailyTestFrequency (OUTPUT_PATH.."//testfrequency.csv", "testfrequencybis5-11-2017.png")
 --]]
 
 --diaryIntoFileWithWeekday ("temp//diarywithweekdays.csv")
