@@ -435,6 +435,11 @@ function timeToDDMMYYYY (time)
 	return os.date ("%d.%m.%Y", time)
 end
 
+function timeToMMYYYY (time)
+	return os.date ("%m.%Y", time)
+end
+
+
 function timeDifference (entryA, entryB)	--in minutes
 	return (entryA.time - entryB.time) / 60
 end
@@ -652,13 +657,13 @@ function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 			["PlotZeitEnde"]  = timeToDDMMYYYY(os.time(nextMonth (startDay_table2))) .. ";00:00",
 			["MesswertDatei"]  = diaryFN,
 			["Titel"] = "Monatsverlauf " ..  os.date ("%m.%Y (%B)", plot_time),  --.. readableTime(plot_time),
-			["plotDateiName"] = OUTPUT_PATH.."//month//monthplot_" .. timeToDDMMYYYY(plot_time) .. ".png"
+			["plotDateiName"] = OUTPUT_PATH.."//month//monthplot_" .. timeToMMYYYY(plot_time) .. ".png"
 			} )
 		
 		runGnuplot ("scatter24h.gnuplot", {
 		["Titel"] = "24h Verteilung fuer" .. os.date ("%m.%Y (%B)", plot_time) ,
 		["MesswertDatei"]  = OUTPUT_PATH.."//monthcsv//month_"..timeToDDMMYYYY(plot_time),
-		["plotDateiName"] =  OUTPUT_PATH.."//month//monthscatter_" .. timeToDDMMYYYY(plot_time) .. ".png"
+		["plotDateiName"] =  OUTPUT_PATH.."//month//monthscatter_" .. timeToMMYYYY(plot_time) .. ".png"
 		} )
 		
 		startDay_table2 = nextMonth (startDay_table2)
@@ -729,10 +734,10 @@ function htmlReport (startDay_table, endDay_table, outFN, diaryFN, zusatzFN)
 			end
 			if TB[i].month ~= currMonth then
 				currMonth = TB[i].month
-				local imgFN = "monthplot_" .. timeToDDMMYYYY(TB[i].time) .. ".png"
+				local imgFN = "monthplot_" .. timeToMMYYYY(TB[i].time) .. ".png"
 				html:write('<img src="month//'..imgFN..'">\n')
 				html:write ("<br>\n")
-				imgFN = "monthscatter_" .. timeToDDMMYYYY(TB[i].time) .. ".png"
+				imgFN = "monthscatter_" .. timeToMMYYYY(TB[i].time) .. ".png"
 				html:write('<img src="month//'..imgFN..'">\n')				
 			end
 		dailyBE = dailyBE+(TB[i].BE or 0)
