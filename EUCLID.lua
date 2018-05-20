@@ -882,17 +882,8 @@ function dailyTestFrequency (tempCSV, outPNG)
 end
 	
 ----
---https://www.lua.org/pil/22.1.html
 
 
---print ( timeDifference (diary[1],diary[2]) )
-
---addEntryFromString("09.11.2016;23:37;77;mg/dl; ;X; ; ; ; ;X; ;")
---addEntryFromString("09.11.2016;22:09;74;mg/dl; ;X; ;X; ; ; ; ;")
---addEntryFromString("09.11.2016;19:52;127;mg/dl; ;X; ;X; ; ; ; ;")
--- 12345678901234567890
-
---readDiaryFromFile ("diary.csv")
 
 --readDiaryFromFile ("diary_august.csv")
 --readZusatzFromFile ("zusatz_august.csv")
@@ -908,9 +899,6 @@ end
 --printHi()
 --printMeals()
 
---FSLIntoDailyFiles ("csv_export_sensor2_12_3_2017.txt")
---readDiaryFromFile ("diary.csv")
---diaryToEmptyZusatzTemplate("zusatz_template.csv")
 
 --[[
 readZusatzFromFile ("zusatz_sensor2.csv")
