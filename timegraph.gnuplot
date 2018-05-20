@@ -10,7 +10,6 @@ reset
 ##	  7            8           9           10           11             12
 
 
-MesswertDatei = "diary.csv" ##ohneEinschwing.csv"							#aus accu-check
 extraMesswertDatei = "extraMessungen.csv"			#fremdgemesse Werte (zB Arzt)
 
 BZobergrenze = 140
@@ -26,7 +25,8 @@ if (!exists ("fslDatei")) {
 	fslDatei = "empty.txt" #"days/FSL_10_12_2016.csv"
 	}
 
-if (!exists ("MessWertDatei")) {
+if (!exists ("MesswertDatei")) {
+	MesswertDatei = "diary.csv" ##ohneEinschwing.csv"							#aus accu-check
 	}
 
 if (!exists ("PlotZeitStart")) {
