@@ -22,10 +22,10 @@ psize = 0.2
 
 set title "wochentage 1.1 bis 19.5 2017"
 
-MesswertDatei = "temp//diarywithweekdays.csv"
+#MesswertDatei = "temp//diarywithweekdays.csv"
 
 set terminal png size 1200,300 enhanced font "Courier,10"
-set output "weekdays.png"
+set output plotDateiName #"weekdays.png"
 
 set multiplot layout 1,7 margins 0.075,0.98,0.2,0.9 	spacing 0.01,0
 set label 1 "MON" at graph 0.05,0.95

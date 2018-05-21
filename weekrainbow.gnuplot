@@ -1,10 +1,11 @@
+##FIXME: defaults if no cmd parameters
 reset
 set datafile sep ';'
 
 set xdata time
 set timefmt "%H:%M"
 set xrange ["00:00":"23:59"]
-set yrange [0:70]		##yrange MUSS gesetzt werden, da nicht alle wochentage gleich oft in den daten vorhanden sind
+set yrange [0:40]		##yrange MUSS gesetzt werden, da nicht alle wochentage gleich oft in den daten vorhanden sind
 
 set grid
 set xtics 0, 60*60*6
@@ -28,12 +29,12 @@ unset border
 pointSizeFactor = 1
 psize = 0 #0.25
 
-MesswertDatei = "temp//diarywithweekdays.csv"
+#MesswertDatei = "temp//diarywithweekdays.csv"
 
 set title "_      (" . MesswertDatei . ")" . " woche ->" right
 
 set terminal png size 1200,600 enhanced font "Courier,10"
-set output "weekrainbow.png"
+set output plotDateiName # "weekrainbow.png"
 
 set multiplot layout 1,7 margins 0.055,0.99,0.2,0.9 	spacing 0.01,0
 set label 1 "MON" at graph 0.05,1.025
