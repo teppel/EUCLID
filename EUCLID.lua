@@ -1,6 +1,6 @@
 --config--
 OUTPUT_PATH = "output"
-DIARY_FILE = "input//diary.csv"
+DIARY_FILE = "input//fakediary.csv"
 ----------
 
 require ("csvparser")
@@ -865,6 +865,7 @@ function DO_BZpairs ()
 end
 
 function dailyTestFrequency (tempCSV, outPNG)
+	print ("dailyTestFrequency()")
 	local f = io.open (tempCSV, "w")
 	local i = #diary
 	local currentDay = diary[i].day
@@ -876,6 +877,7 @@ function dailyTestFrequency (tempCSV, outPNG)
 	local farOutLO = 60
 	local farOutHI = 200
 	for i=#diary,1,-1 do		
+		--print ("oString:",diary[i].originalString)
 		if (diary[i-1] and math.abs(timeDifference(diary[i],diary[i-1])) < doubleTestMinutes) then			
 			doubleTests = doubleTests +1
 		end
@@ -988,9 +990,21 @@ readDiaryFromFile (DIARY_FILE)
 mergeDiaryAndZusatzIntoTB_v2()
 diaryIntoMonthlyFiles (OUTPUT_PATH.."//monthcsv//")
 htmlReport ( firstDiaryDay()  , lastDiaryDay() , "report.html", DIARY_FILE)
-
---readDiaryFromFile ("diary.csv")
 dailyTestFrequency (OUTPUT_PATH.."//testfrequency.csv", OUTPUT_PATH.."//testfrequency.png")
+
+diaryIntoFileWithWeekday ("temp//diarywithweekdays.csv")
+runGnuplot ("weekrainbow.gnuplot", {
+		["Titel"] = "Wochendings",
+		["MesswertDatei"]  = "temp//diarywithweekdays.csv",
+		["plotDateiName"] =  OUTPUT_PATH.."//weekrainbow.png",		
+		} )
+
+runGnuplot ("weekdays.gnuplot", {
+		["Titel"] = "Wochentage",
+		["MesswertDatei"]  = "temp//diarywithweekdays.csv",
+		["plotDateiName"] =  OUTPUT_PATH.."//wochentage.png",		
+		} )
+
 --]]
 
 --diaryIntoFileWithWeekday ("temp//diarywithweekdays.csv")
